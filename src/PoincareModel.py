@@ -1,12 +1,20 @@
 import numpy as np
 from numpy.linalg import norm
 from numpy import log, exp
-from utils import poincare_dist
+from poincare_math import poincare_dist, poincare_projection
+from tools.Logger import Logger
+
+from constants import MAX_RAND
 
 class PoincareModel :
-	def __init__(self):
-		self.data = Data(data)
-		self.learning_rate = learning_rate
+	def __init__(self, model_parameters, data_parameters):
+		self.data = Data(data_parameters)
+		self.learning_rate = model_parameters.learning_rate
+		self.epochs = model_parameters.epochs
+		self.Theta = self.initialize_theta(n=self.data.n, p=self.data.p)
+
+
+		self.logger = Logger()
 
 	def compute_loss(self, batch):
 		"""
@@ -30,7 +38,34 @@ class PoincareModel :
 		                     for u in self.data.unique_vectors]
 		                    for v in self.data.unique_vectors])
 
-	def compute_norm(self):
+	def compute_riemman_gradient(self):
 
+
+	def burn_in(self):
+		pass
+
+
+
+	def update_parameters(self, riemman_gradient):
+		for idx, grad in riemman_gradient :
+			self.theta[int(idx)] = poincare_projection(self.theta[int(idx)] -
+			                                           self.learning_rate * grad)
+
+	@staticmethod
+	def initialize_theta(n, p, max_rand=MAX_RAND):
+		return [[np.random.uniform(- max_rand, max_rand)
+		         for _ in range(n)] for _ in range(p)]
+
+	def learn(self):
+		for epoch in range(self.epochs):
+			for batch in self.Data.learn_batches():
+				gradient = self.compute_gradient()
+				self.theta[gradient.indices] -= self.learning_rate * gradient.gradient
+				loss = self.compute_loss(batch)
+
+				self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
+
+
+	def save(self):
 
 
