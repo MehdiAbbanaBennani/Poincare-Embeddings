@@ -27,10 +27,10 @@ def d_poincare_dist(theta, x):
 	gamma = 1 + 2 /(alpha * beta) * norm(theta - x)**2
 	left_coef = 4 / (beta * sqrt(gamma ** 2 - 1))
 
-	left_num = norm(x - theta) ** 2 + 1 - norm(theta) ** 2 / alpha ** 2
+	left_num = norm(x - theta) ** 2 + 1 - norm(theta) ** 2
 	right_coef = left_num / alpha ** 2 * theta - x / alpha
 	return left_coef * right_coef
 
 
 def matrix_norm(theta):
-	return np.sum(np.multiply(theta))
+	return np.sum(np.multiply(theta, theta))
