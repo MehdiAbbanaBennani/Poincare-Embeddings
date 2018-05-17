@@ -1,6 +1,10 @@
+from constants import LOG_DIR
+import os
+import datetime
 
 
-
-def compute_log_dir(log_dir):
+def log_setup(log_dir=LOG_DIR):
 	now = datetime.datetime.now().strftime("%b:%d:%Y:%H:%M:%S")
-	return log_dir + "run_logs:" + now + "/"
+	folder_name = log_dir + now + "/"
+	os.mkdir(folder_name)
+	return folder_name
