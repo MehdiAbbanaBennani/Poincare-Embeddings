@@ -9,7 +9,7 @@ from utils import log_setup
 
 class PoincareModel:
 	def __init__(self, model_parameters, data_parameters):
-		self.data = Data(data_parameters)
+		# self.data = Data(data_parameters)
 		self.learning_rate = model_parameters.learning_rate
 		self.epochs = model_parameters.epochs
 
@@ -20,7 +20,6 @@ class PoincareModel:
 
 		self.log_dir = log_setup()
 		self.logger = Logger(self.log_dir)
-
 
 
 	def compute_loss(self, batch):
@@ -94,21 +93,46 @@ class PoincareModel:
 		return [[np.random.uniform(- max_rand, max_rand)
 		         for _ in range(p)] for _ in range(n)]
 
-	def run(self):
+	def run(self, save=True):
 		if self.burn_in:
 			self.train(epochs=BURN_IN_EPOCHS, learning_rate=BURN_IN_RATE)
 		self.train(epochs=self.epochs, learning_rate=self.learning_rate)
+		if save :
+			self.save_all()
 
 	def train(self, epochs, learning_rate):
 		for epoch in range(epochs):
-			for batch in self.Data.learn_batches():
+			for batch in self.Data.batches():
 				riemman_gradient = self.compute_riemman_gradient()
 				self.update_parameters(riemman_gradient, learning_rate)
 				loss = self.compute_loss(batch)
 
 				self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
 
-	def save(self):
+	def save_model(self):
 		filename = self.log_dir + "model.pkl"
 		with open(filename, 'w') as f :
 			pickle.dump(self.theta, f)
+
+	def save_all(self):
+		self.save_model()
+		self.logger.save()
+
+	def load(self, model_dir, data_dir):
+		pass
+
+	@staticmethod
+	def predict_sample(u, v):
+		# TODO : check the prediction method
+		dist = poincare_dist(u, v)
+		if dist > 0.5 :
+			return 1
+		return 0
+
+	def predict(self, data):
+		"""
+
+		:param data: a list of pairs
+		:return: a list of int : the predictions
+		"""
+		return [self.predict_sample(*sample) for sample in data]
