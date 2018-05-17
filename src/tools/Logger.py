@@ -9,12 +9,17 @@ class Logger :
 		self.logs = defaultdict([])
 		self.keys = keys
 
-	def log(self, key, value):
-		self.logs[key] = value
+	def log(self, keys, values):
+		"""
+
+		:param keys: list
+		:param values: list
+		"""
+		for i in range(len(keys)) :
+			self.logs[keys[i]] = values[i]
 
 	def store(self, log_dir=LOG_DIR):
-		now = datetime.datetime.now().strftime("%b:%d:%Y:%H:%M:%S")
-		log_filen = LOG_DIR + "run_logs:" + now + ".json"
+
 		with open(log_filen, 'w') as outfile:
 			data = json.dumps(self.logs, indent=4, sort_keys=True)
 			outfile.write(data)

@@ -1,9 +1,6 @@
-import numpy as np
-from numpy.linalg import norm
 from numpy import log, exp
-from poincare_math import poincare_dist, poincare_projection
+from poincare_math import *
 from tools.Logger import Logger
-
 from constants import MAX_RAND
 
 class PoincareModel :
@@ -11,8 +8,10 @@ class PoincareModel :
 		self.data = Data(data_parameters)
 		self.learning_rate = model_parameters.learning_rate
 		self.epochs = model_parameters.epochs
-		self.Theta = self.initialize_theta(n=self.data.n, p=self.data.p)
 
+		self.theta = self.initialize_theta(n=self.data.n, p=self.data.p)
+
+		self.burn_in = model_parameters.burn_in
 
 		self.logger = Logger()
 
@@ -38,33 +37,71 @@ class PoincareModel :
 		                     for u in self.data.unique_vectors]
 		                    for v in self.data.unique_vectors])
 
-	def compute_riemman_gradient(self):
-
-
-	def burn_in(self):
-		pass
 
 
 
-	def update_parameters(self, riemman_gradient):
+	def compute_riemman_gradient(self, batch):
+		"""
+		
+		:param batch: 
+		:return: A dictionary, with indexes as keys and grads as vals
+		"""
+
+		grads = {}
+		# We first add the u term which is always present
+		for sample in batch :
+			grads = self.compute_riemman_grad_sample(u_id=sample.u_id,
+			                                                v_id=sample.v_id,
+			                                                neigh_u_ids=sample.neigh_u_ids,
+			                                         grads=grads)
+		return grads
+
+	def compute_riemman_grad_sample(self, u_id, v_id, neigh_u_ids, grads):
+		# grads = defaultdict([])
+
+		# Compute (u, v) grad
+		uv_grad = - d_poincare_dist(self.theta[u_id],
+		                                   self.theta[v_id])
+		grads[str(u_id)] = uv_grad
+		grads[str(v_id)] = uv_grad
+
+		# Compute (u, N(u)) grads
+		for v_prime_id in neigh_u_ids :
+			uv_prime_grad = d_poincare_dist(self.theta[u_id],
+			                          self.theta[v_prime_id])
+			grads[str(u_id)] = uv_prime_grad
+			grads[str(v_id)] = uv_prime_grad
+
+		return grads
+
+
+	def regularizer_loss(self):
+		return self.L2_loss * matrix_norm(theta=self.theta)
+
+
+	def update_parameters(self, riemman_gradient, learning_rate):
 		for idx, grad in riemman_gradient :
 			self.theta[int(idx)] = poincare_projection(self.theta[int(idx)] -
-			                                           self.learning_rate * grad)
+			                                           learning_rate * grad)
 
 	@staticmethod
 	def initialize_theta(n, p, max_rand=MAX_RAND):
 		return [[np.random.uniform(- max_rand, max_rand)
-		         for _ in range(n)] for _ in range(p)]
+		         for _ in range(p)] for _ in range(n)]
 
 	def learn(self):
-		for epoch in range(self.epochs):
+		if self.burn_in :
+			self.train(epochs=)
+
+
+	def train(self, epochs, learning_rate):
+		for epoch in range(epochs):
 			for batch in self.Data.learn_batches():
-				gradient = self.compute_gradient()
-				self.theta[gradient.indices] -= self.learning_rate * gradient.gradient
+				riemman_gradient = self.compute_riemman_gradient()
+				self.update_parameters(riemman_gradient, learning_rate)
 				loss = self.compute_loss(batch)
 
 				self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
-
 
 	def save(self):
 
