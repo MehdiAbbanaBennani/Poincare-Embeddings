@@ -41,10 +41,10 @@ class PoincareModel:
 		den = sum([exp(- poincare_dist(u, v_prime)) for v_prime in neg_samples])
 		return log(num / den)
 
-	def compute_euclidian_distances(self):
-		self.euclidian_distances = np.array([[norm((u - v))
-		                                      for u in self.data.unique_vectors]
-		                                     for v in self.data.unique_vectors])
+	# def compute_euclidian_distances(self):
+	# 	self.euclidian_distances = np.array([[norm((u - v))
+	# 	                                      for u in self.data.unique_vectors]
+	# 	                                     for v in self.data.unique_vectors])
 
 	def compute_riemman_gradient(self, batch):
 		"""
@@ -66,22 +66,21 @@ class PoincareModel:
 		# grads = defaultdict([])
 
 		# Compute (u, v) grad
-		uv_grad = - d_poincare_dist(self.theta[u_id],
-		                            self.theta[v_id])
-		grads[str(u_id)] = uv_grad
-		grads[str(v_id)] = uv_grad
+		uv_grad = - d_poincare_dist(self.theta[u_id], self.theta[v_id])
+		grads[str(u_id)] += uv_grad
+		grads[str(v_id)] += uv_grad
 
 		# Compute (u, N(u)) grads
 		for v_prime_id in neigh_u_ids:
-			uv_prime_grad = d_poincare_dist(self.theta[u_id],
+			uv_prime_grad = + d_poincare_dist(self.theta[u_id],
 			                                self.theta[v_prime_id])
-			grads[str(u_id)] = uv_prime_grad
-			grads[str(v_id)] = uv_prime_grad
+			grads[str(u_id)] += uv_prime_grad
+			grads[str(v_id)] += uv_prime_grad
 
 		return grads
 
-	def regularizer_loss(self):
-		return self.L2_loss * matrix_norm(theta=self.theta)
+	def regularizer_loss(self, idx):
+		return self.L2_loss * matrix_norm(theta=self.theta, idx=idx)
 
 	def update_parameters(self, riemman_gradient, learning_rate):
 		for idx, grad in riemman_gradient:
@@ -90,15 +89,8 @@ class PoincareModel:
 
 	@staticmethod
 	def initialize_theta(n, p, max_rand=MAX_RAND):
-		return [[np.random.uniform(- max_rand, max_rand)
-		         for _ in range(p)] for _ in range(n)]
-
-	def run(self, save=True):
-		if self.burn_in:
-			self.train(epochs=BURN_IN_EPOCHS, learning_rate=BURN_IN_RATE)
-		self.train(epochs=self.epochs, learning_rate=self.learning_rate)
-		if save :
-			self.save_all()
+		return np.array([[np.random.uniform(- max_rand, max_rand)
+		         for _ in range(p)] for _ in range(n)])
 
 	def train(self, epochs, learning_rate):
 		for epoch in range(epochs):
@@ -108,6 +100,13 @@ class PoincareModel:
 				loss = self.compute_loss(batch)
 
 				self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
+
+	def run(self, save=True):
+		if self.burn_in:
+			self.train(epochs=BURN_IN_EPOCHS, learning_rate=BURN_IN_RATE)
+		self.train(epochs=self.epochs, learning_rate=self.learning_rate)
+		if save:
+			self.save_all()
 
 	def save_model(self):
 		filename = self.log_dir + "model.pkl"
@@ -126,8 +125,8 @@ class PoincareModel:
 		# TODO : check the prediction method
 		dist = poincare_dist(u, v)
 		if dist > 0.5 :
-			return 1
-		return 0
+			return 0
+		return 1
 
 	def predict(self, data):
 		"""

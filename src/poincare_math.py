@@ -20,17 +20,24 @@ def poincare_projection(theta, epsilon=EPSILON):
 def d_poincare_dist(theta, x):
 	"""
 	Partial derivative of the poincare distance
+
 	:return:
 	"""
-	beta = 1 - norm(x) ** 2
-	alpha = 1 - norm(theta) ** 2
-	gamma = 1 + 2 /(alpha * beta) * norm(theta - x)**2
-	left_coef = 4 / (beta * sqrt(gamma ** 2 - 1))
+	beta = 1 - norm(x) ** 2 # (1)
+	alpha = 1 - norm(theta) ** 2 # (1)
+	gamma = 1 + 2 /(alpha * beta) * norm(theta - x)**2 # (1)
+	left_coef = 4 / (beta * sqrt(gamma ** 2 - 1)) # (1)
 
 	left_num = norm(x - theta) ** 2 + 1 - norm(theta) ** 2
 	right_coef = left_num / alpha ** 2 * theta - x / alpha
 	return left_coef * right_coef
 
 
-def matrix_norm(theta):
-	return np.sum(np.multiply(theta, theta))
+def matrix_norm(Theta, idx):
+	"""
+
+	:param Theta: (n, d) matrix
+	idx : list of indices
+	:return:
+	"""
+	return np.sum(np.multiply(Theta[idx,idx], Theta[idx,idx]))

@@ -15,7 +15,7 @@ class Logger :
 		:param values: list
 		"""
 		for i in range(len(keys)) :
-			self.logs[keys[i]] = values[i]
+			self.logs[keys[i]].append(values[i])
 
 	def store(self):
 		filename = self.logdir + "logs.json"
