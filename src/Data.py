@@ -9,9 +9,9 @@ import csv
 from collections import defaultdict
 
 
-PATH_TO_DATA = os.path.join(os.getcwd(),'data')
-os.listdir(PATH_TO_DATA)
-wordnet_mammal_file = os.path.join(PATH_TO_DATA, 'wordnet_mammal_hypernyms.tsv')
+# PATH_TO_DATA = os.path.join(os.getcwd(),'data')
+# os.listdir(PATH_TO_DATA)
+# wordnet_mammal_file = os.path.join(PATH_TO_DATA, 'wordnet_mammal_hypernyms.tsv')
 
 
 class PoincareData():
@@ -99,3 +99,5 @@ class PoincareData():
         if verbose:
             print('Vocabulary Build !')
             print(str(doublon) + ' doublons was found')
+
+		def batches():
