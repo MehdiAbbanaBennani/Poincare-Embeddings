@@ -1,4 +1,4 @@
-from numpy import arccosh, sqrt
+from numpy import arccosh, sqrt, exp
 from numpy.linalg import norm
 import numpy as np
 
@@ -21,7 +21,7 @@ def d_poincare_dist(theta, x):
 	"""
 	Partial derivative of the poincare distance
 
-	:return:
+	:return: an array of dimension p
 	"""
 	beta = 1 - norm(x) ** 2 # (1)
 	alpha = 1 - norm(theta) ** 2 # (1)
@@ -33,11 +33,27 @@ def d_poincare_dist(theta, x):
 	return left_coef * right_coef
 
 
-def matrix_norm(Theta, idx):
+def matrix_norm(theta, idx):
 	"""
 
 	:param Theta: (n, d) matrix
 	idx : list of indices
-	:return:
+	:return: float
 	"""
-	return np.sum(np.multiply(Theta[idx,idx], Theta[idx,idx]))
+	sub_theta = theta[np.ix_(idx, idx)]
+	return np.sum(np.multiply(sub_theta, sub_theta))
+
+
+def compute_poincare_coeff(u_id, v_prime_id, neigh_u_ids, theta):
+	"""
+		Computes the S coefficient used in the gradient computation
+	:param u_id: int
+	:param v_prime_id: int
+	:param neigh_u_ids: list of ints
+	:param theta: (n,p) matrix
+	:return: float
+	"""
+	num = exp(-poincare_dist(theta[u_id], theta[v_prime_id]))
+	den = sum([exp(-poincare_dist(theta[u_id], theta[v_neigh_id]))
+	           for v_neigh_id in neigh_u_ids])
+	return num / den

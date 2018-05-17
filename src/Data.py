@@ -99,5 +99,3 @@ class PoincareData():
         if verbose:
             print('Vocabulary Build !')
             print(str(doublon) + ' doublons was found')
-
-		def batches():
