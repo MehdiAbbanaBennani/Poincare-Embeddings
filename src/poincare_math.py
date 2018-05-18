@@ -23,7 +23,7 @@ def d_poincare_dist(theta, x):
 
 	:return: an array of dimension p
 	"""
-	if norm(x) != norm(theta) :
+	if norm(x- theta) != 0 :
 		beta = 1 - norm(x) ** 2 # (1)
 		alpha = 1 - norm(theta) ** 2 # (1)
 		gamma = 1 + 2 /(alpha * beta) * norm(theta - x)**2 # (1)
@@ -32,6 +32,7 @@ def d_poincare_dist(theta, x):
 		left_num = norm(x - theta) ** 2 + 1 - norm(theta) ** 2
 		right_coef = left_num / alpha ** 2 * theta - x / alpha
 		return left_coef * right_coef
+
 	return np.zeros(np.shape(x))
 
 def matrix_norm(theta, idx):

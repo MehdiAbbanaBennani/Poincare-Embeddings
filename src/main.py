@@ -8,7 +8,7 @@ model_parameters = {"learning_rate" : 0.001,
                     "epochs" : 15,
                     "burn_in" : True,
                     "l2_reg" : 0.01,
-                    "p" : 2,
+                    "p" : 5,
                     "nb_neg_samples" : 10
                     }
 

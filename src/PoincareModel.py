@@ -131,7 +131,7 @@ class PoincareModel:
 
 	def save_model(self):
 		filename = self.log_dir + "model.pkl"
-		with open(filename, 'w') as f:
+		with open(filename, 'wb') as f:
 			pickle.dump(self.theta, f)
 
 	def save_all(self):
