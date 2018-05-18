@@ -6,21 +6,23 @@ from Data import PoincareData
 from constants import BURN_IN_EPOCHS, BURN_IN_RATE, MAX_RAND
 from poincare_math import *
 from tools.Logger import Logger
-from utils import log_setup
+from utils import log_setup, merge
 from collections import defaultdict
+from functools import partial
+
 
 class PoincareModel:
 	def __init__(self, model_parameters, data_parameters):
 		self.data = PoincareData(data_parameters["filename"],
 		                         data_parameters["nmax"])
-		self.learning_rate = model_parameters.learning_rate
-		self.epochs = model_parameters.epochs
-		self.p = model_parameters.p
+		self.learning_rate = model_parameters["learning_rate"]
+		self.epochs = model_parameters["epochs"]
+		self.p = model_parameters["p"]
+		self.burn_in = model_parameters["burn_in"]
+		self.l2_reg = model_parameters["l2_reg"]
+		self.nb_neg_samples = model_parameters["nb_neg_samples"]
 
-		self.theta = self.initialize_theta(n=self.data.n_data, p=self.p)
-
-		self.burn_in = model_parameters.burn_in
-		self.l2_reg = model_parameters.l2_reg
+		self.theta = self.initialize_theta(n=self.data.n_unique_words, p=self.p)
 
 		self.log_dir = log_setup()
 		self.logger = Logger(self.log_dir)
@@ -31,20 +33,16 @@ class PoincareModel:
 		:param batch: list of elements of class batch
 		:return: (float) the average loss over the batch
 		"""
-		individual_losses = [self.compute_individual_loss(u_idx=batch[i].u_idx,
-		                                                  v_idx=batch[i].v_idx,
-		                                                  neg_samples_idx=batch[
-			                                                  i].neg_samples_idx)
-		                     for i in range(len(batch))]
+		individual_losses = [self.compute_individual_loss(sample) for sample in batch]
 
 		unique_indices = self.batch_unique_indices(batch)
 		reg_loss = self.regularizer_loss(unique_indices)
 		return np.mean(individual_losses) + reg_loss
 
 	def batch_unique_indices(self, batch):
-		u_idxs = [sample.u_idx for sample in batch]
-		v_idxs = [sample.v_idx for sample in batch]
-		neg_idxs = [sample.neg_samples_idx for sample in batch]
+		u_idxs = [sample.u_id for sample in batch]
+		v_idxs = [sample.v_id for sample in batch]
+		neg_idxs = merge([sample.neigh_u_ids for sample in batch])
 		return self.compute_unique_indices(u_idxs=u_idxs,
 		                                   v_idxs=v_idxs,
 		                                   neg_idxs=neg_idxs)
@@ -53,9 +51,12 @@ class PoincareModel:
 	def compute_unique_indices(u_idxs, v_idxs, neg_idxs):
 		return list(set(u_idxs + v_idxs + neg_idxs))
 
-	def compute_individual_loss(self, u_idx, v_idx, neg_samples_idx):
-		num = exp(- poincare_dist(u, v))
-		den = sum([exp(- poincare_dist(u, v_prime)) for v_prime in neg_samples])
+	def compute_individual_loss(self, sample):
+		num = exp(- poincare_dist(self.theta[sample.u_id],
+		                          self.theta[sample.v_id]))
+		den = sum([exp(- poincare_dist(self.theta[sample.u_id],
+		                               self.theta[v_prime]))
+		           for v_prime in sample.neigh_u_ids])
 		return log(num / den)
 
 	# def compute_euclidian_distances(self):
@@ -70,17 +71,16 @@ class PoincareModel:
 		:return: A dictionary, with indexes as keys and grads as vals
 		"""
 
-		grads = {}
+		grads = defaultdict(partial(np.zeros, self.p))
 		# We first add the u term which is always present
 		for sample in batch:
-			grads = self.compute_riemman_grad_sample(u_id=sample.u_id,
-			                                         v_id=sample.v_id,
-			                                         neigh_u_ids=sample.neigh_u_ids,
+			grads = self.compute_riemman_grad_sample(u_id=sample["u_id"],
+			                                         v_id=sample["v_id"],
+			                                         neigh_u_ids=sample["neigh_u_ids"],
 			                                         grads=grads)
 		return grads
 
 	def compute_riemman_grad_sample(self, u_id, v_id, neigh_u_ids, grads):
-		grads = defaultdict(np.zeros(self.p))
 
 		# Compute (u, v) grad
 		uv_grad = - d_poincare_dist(self.theta[u_id], self.theta[v_id])
@@ -98,10 +98,10 @@ class PoincareModel:
 		return grads
 
 	def regularizer_loss(self, idx):
-		return self.L2_loss * matrix_norm(theta=self.theta, idx=idx)
+		return self.l2_reg * matrix_norm(theta=self.theta, idx=idx)
 
 	def update_parameters(self, riemman_gradient, learning_rate):
-		for idx, grad in riemman_gradient:
+		for idx, grad in riemman_gradient.items():
 			self.theta[int(idx)] = poincare_projection(self.theta[int(idx)] -
 			                                           learning_rate * grad)
 
@@ -112,12 +112,15 @@ class PoincareModel:
 
 	def train(self, epochs, learning_rate):
 		for epoch in range(epochs):
-			for batch in self.Data.batches():
-				riemman_gradient = self.compute_riemman_gradient()
+			batches = self.data.batches(self.nb_neg_samples)
+			for batch in batches:
+				riemman_gradient = self.compute_riemman_gradient(batch)
 				self.update_parameters(riemman_gradient, learning_rate)
-				loss = self.compute_loss(batch)
+			loss = self.compute_loss(self.data.loss_batch(self.nb_neg_samples))
 
-				self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
+			reg = self.regularizer_loss([i for i in range(self.theta.shape[0])])
+			print("{:15}|{:20}|{:20}".format(epoch, loss, reg))
+			self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
 
 	def run(self, save=True):
 		if self.burn_in:

@@ -4,7 +4,7 @@ import json
 
 class Logger :
 	def __init__(self, logdir, keys=None):
-		self.logs = defaultdict([])
+		self.logs = defaultdict(list)
 		self.keys = keys
 		self.logdir = logdir
 

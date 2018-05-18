@@ -1,4 +1,4 @@
-MAX_RAND = 0.1
+MAX_RAND = 0.4
 LOG_DIR = "../logs/"
 DATA_DIR = "../data/wordnet_mammal_hypernyms.tsv"
 
