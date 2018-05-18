@@ -4,7 +4,6 @@ import numpy as np
 
 from constants import EPSILON
 
-
 def poincare_dist(u, v) :
 	num = norm(u - v) ** 2
 	den = (1 - norm(u) ** 2) * (1 - norm(v) ** 2)
@@ -34,16 +33,6 @@ def d_poincare_dist(theta, x):
 		return left_coef * right_coef
 
 	return np.zeros(np.shape(x))
-
-def matrix_norm(theta, idx):
-	"""
-
-	:param Theta: (n, d) matrix
-	idx : list of indices
-	:return: float
-	"""
-	sub_theta = theta[idx]
-	return np.sum(np.multiply(sub_theta, sub_theta))
 
 
 def compute_poincare_coeff(u_id, v_prime_id, neigh_u_ids, theta):

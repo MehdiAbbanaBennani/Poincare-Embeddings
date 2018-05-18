@@ -1,14 +1,16 @@
 import pickle
+from collections import defaultdict
+from functools import partial
 
 from numpy import log
+import autograd.numpy as grad_np
 
 from Data import PoincareData
 from constants import BURN_IN_EPOCHS, BURN_IN_RATE, MAX_RAND
 from poincare_math import *
 from tools.Logger import Logger
 from utils import log_setup, merge
-from collections import defaultdict
-from functools import partial
+from math_tools import *
 
 
 class PoincareModel:
@@ -33,7 +35,8 @@ class PoincareModel:
 		:param batch: list of elements of class batch
 		:return: (float) the average loss over the batch
 		"""
-		individual_losses = [self.compute_individual_loss(sample) for sample in batch]
+		individual_losses = [self.compute_individual_loss(sample) for sample in
+		                     batch]
 
 		unique_indices = self.batch_unique_indices(batch)
 		reg_loss = self.regularizer_loss(unique_indices)
@@ -64,7 +67,20 @@ class PoincareModel:
 	# 	                                      for u in self.data.unique_vectors]
 	# 	                                     for v in self.data.unique_vectors])
 
-	def compute_riemman_gradient(self, batch):
+	def compute_gradient(self, batch):
+		riemann_grads = self.compute_riemann_gradient(batch)
+		grads = self.compute_reg_grad(batch)
+		return sum_grads(riemann_grads, grads)
+
+	def compute_reg_grad(self, batch):
+		unique_indices = self.batch_unique_indices(batch)
+		# sub_theta = compute_sub_theta(self.theta, unique_indices)
+		grads = defaultdict(partial(np.zeros, self.p))
+		for idx in unique_indices :
+			grads[idx] += self.l2_reg * self.theta[idx]
+		return grads
+
+	def compute_riemann_gradient(self, batch):
 		"""
 		
 		:param batch: a list of (u_idx, v_idx, [v_neigh])
@@ -74,13 +90,14 @@ class PoincareModel:
 		grads = defaultdict(partial(np.zeros, self.p))
 		# We first add the u term which is always present
 		for sample in batch:
-			grads = self.compute_riemman_grad_sample(u_id=sample["u_id"],
+			grads = self.compute_riemann_grad_sample(u_id=sample["u_id"],
 			                                         v_id=sample["v_id"],
-			                                         neigh_u_ids=sample["neigh_u_ids"],
+			                                         neigh_u_ids=sample[
+				                                         "neigh_u_ids"],
 			                                         grads=grads)
 		return grads
 
-	def compute_riemman_grad_sample(self, u_id, v_id, neigh_u_ids, grads):
+	def compute_riemann_grad_sample(self, u_id, v_id, neigh_u_ids, grads):
 
 		# Compute (u, v) grad
 		uv_grad = - d_poincare_dist(self.theta[u_id], self.theta[v_id])
@@ -114,8 +131,9 @@ class PoincareModel:
 		for epoch in range(epochs):
 			batches = self.data.batches(self.nb_neg_samples)
 			for batch in batches:
-				riemman_gradient = self.compute_riemman_gradient(batch)
-				self.update_parameters(riemman_gradient, learning_rate)
+				# riemman_gradient = self.compute_riemann_gradient(batch)
+				gradient = self.compute_gradient(batch)
+				self.update_parameters(gradient, learning_rate)
 			loss = self.compute_loss(self.data.loss_batch(self.nb_neg_samples))
 
 			reg = self.regularizer_loss([i for i in range(self.theta.shape[0])])
@@ -156,3 +174,12 @@ class PoincareModel:
 		:return: a list of int : the predictions
 		"""
 		return [self.predict_sample(*sample) for sample in data]
+
+	def score(self, data):
+		"""
+		A list of tuples (u_id, v_id, neigh_ids)
+		:param data:
+		:return: Mean accuracy for link prediction
+		"""
+		predictions = self.predict(data)
+		return sum(predictions) / len(predictions)
