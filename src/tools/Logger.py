@@ -17,7 +17,7 @@ class Logger :
 		for i in range(len(keys)) :
 			self.logs[keys[i]].append(values[i])
 
-	def store(self):
+	def save(self):
 		filename = self.logdir + "logs.json"
 		with open(filename, 'w') as outfile:
 			data = json.dumps(self.logs, indent=4, sort_keys=True)

@@ -2,15 +2,15 @@ import pickle
 from collections import defaultdict
 from functools import partial
 
-from numpy import log
+import autograd
 import autograd.numpy as grad_np
 
 from Data import PoincareData
 from constants import BURN_IN_EPOCHS, BURN_IN_RATE, MAX_RAND
+from math_tools import *
 from poincare_math import *
 from tools.Logger import Logger
 from utils import log_setup, merge
-from math_tools import *
 
 
 class PoincareModel:
@@ -29,18 +29,21 @@ class PoincareModel:
 		self.log_dir = log_setup()
 		self.logger = Logger(self.log_dir)
 
-	def compute_loss(self, batch):
+	def compute_loss(self, theta, batch, mod=np):
 		"""
 		Computes the average loss over the batch
 		:param batch: list of elements of class batch
 		:return: (float) the average loss over the batch
 		"""
-		individual_losses = [self.compute_individual_loss(sample) for sample in
-		                     batch]
+		individual_losses = mod.array([self.compute_individual_loss(theta=theta,
+		                                                            sample=sample,
+		                                                            mod=mod)
+		                               for sample in batch])
 
 		unique_indices = self.batch_unique_indices(batch)
-		reg_loss = self.regularizer_loss(unique_indices)
-		return np.mean(individual_losses) + reg_loss
+		base_loss = mod.sum(individual_losses) / individual_losses.shape[0]
+		reg_loss = self.regularizer_loss(unique_indices, mod)
+		return base_loss + reg_loss
 
 	def batch_unique_indices(self, batch):
 		u_idxs = [sample.u_id for sample in batch]
@@ -54,18 +57,16 @@ class PoincareModel:
 	def compute_unique_indices(u_idxs, v_idxs, neg_idxs):
 		return list(set(u_idxs + v_idxs + neg_idxs))
 
-	def compute_individual_loss(self, sample):
-		num = exp(- poincare_dist(self.theta[sample.u_id],
-		                          self.theta[sample.v_id]))
-		den = sum([exp(- poincare_dist(self.theta[sample.u_id],
-		                               self.theta[v_prime]))
-		           for v_prime in sample.neigh_u_ids])
-		return log(num / den)
-
-	# def compute_euclidian_distances(self):
-	# 	self.euclidian_distances = np.array([[norm((u - v))
-	# 	                                      for u in self.data.unique_vectors]
-	# 	                                     for v in self.data.unique_vectors])
+	def compute_individual_loss(self, theta, sample, mod):
+		num = mod.exp(- poincare_dist(u=theta[sample.u_id],
+		                              v=theta[sample.v_id],
+		                              mod=mod),
+		              )
+		den = mod.sum([mod.exp(- poincare_dist(u=theta[sample.u_id],
+		                                       v=theta[v_prime],
+		                                       mod=mod))
+		               for v_prime in sample.neigh_u_ids])
+		return mod.log(num / den)
 
 	def compute_gradient(self, batch):
 		riemann_grads = self.compute_riemann_gradient(batch)
@@ -76,7 +77,7 @@ class PoincareModel:
 		unique_indices = self.batch_unique_indices(batch)
 		# sub_theta = compute_sub_theta(self.theta, unique_indices)
 		grads = defaultdict(partial(np.zeros, self.p))
-		for idx in unique_indices :
+		for idx in unique_indices:
 			grads[idx] += self.l2_reg * self.theta[idx]
 		return grads
 
@@ -114,8 +115,8 @@ class PoincareModel:
 			grads[str(v_id)] += grad_coef * uv_prime_grad
 		return grads
 
-	def regularizer_loss(self, idx):
-		return self.l2_reg * matrix_norm(theta=self.theta, idx=idx)
+	def regularizer_loss(self, idx, mod=np):
+		return self.l2_reg * matrix_norm(theta=self.theta, idx=idx, mod=mod)
 
 	def update_parameters(self, riemman_gradient, learning_rate):
 		for idx, grad in riemman_gradient.items():
@@ -128,21 +129,25 @@ class PoincareModel:
 		                  for _ in range(p)] for _ in range(n)])
 
 	def train(self, epochs, learning_rate):
+		print("{:15}|{:20}|{:20}".format("Epoch", "Loss", "Regularisation loss"))
 		for epoch in range(epochs):
 			batches = self.data.batches(self.nb_neg_samples)
 			for batch in batches:
-				# riemman_gradient = self.compute_riemann_gradient(batch)
 				gradient = self.compute_gradient(batch)
+				self.check_gradient(gradient, batch)
 				self.update_parameters(gradient, learning_rate)
-			loss = self.compute_loss(self.data.loss_batch(self.nb_neg_samples))
+			loss = self.compute_loss(theta=self.theta,
+			                         batch=self.data.loss_batch(self.nb_neg_samples))
 
 			reg = self.regularizer_loss([i for i in range(self.theta.shape[0])])
 			print("{:15}|{:20}|{:20}".format(epoch, loss, reg))
 			self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
 
 	def run(self, save=True):
+		print("Burn-in ... ")
 		if self.burn_in:
 			self.train(epochs=BURN_IN_EPOCHS, learning_rate=BURN_IN_RATE)
+		print("Learning ... ")
 		self.train(epochs=self.epochs, learning_rate=self.learning_rate)
 		if save:
 			self.save_all()
@@ -183,3 +188,18 @@ class PoincareModel:
 		"""
 		predictions = self.predict(data)
 		return sum(predictions) / len(predictions)
+
+	def compute_true_grad(self, batch, theta):
+		theta = grad_np.array(theta)
+
+		def loss(theta):
+			return self.compute_loss(theta, batch, mod=grad_np)
+
+		grad_loss = autograd.grad(loss)
+		return grad_loss(theta)
+
+	def check_gradient(self, gradients, batch):
+		true_gradient = self.compute_true_grad(batch, self.theta)
+		errors = [np.linalg.norm(gradients[str(i)] - true_gradient[i])
+		          for i in range(true_gradient.shape[0])]
+		return sum(errors) / len(errors)

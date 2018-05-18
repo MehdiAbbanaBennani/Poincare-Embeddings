@@ -23,7 +23,7 @@ def compute_sub_theta(theta, idx):
 	return theta[idx]
 
 
-def matrix_norm(theta, idx):
+def matrix_norm(theta, idx, mod):
 	"""
 
 	:param Theta: (n, d) matrix
@@ -31,4 +31,4 @@ def matrix_norm(theta, idx):
 	:return: a float
 	"""
 	sub_theta = compute_sub_theta(theta, idx)
-	return np.sum(np.multiply(sub_theta, sub_theta))
+	return mod.sum(mod.multiply(sub_theta, sub_theta))
