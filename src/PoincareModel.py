@@ -129,19 +129,27 @@ class PoincareModel:
 		                  for _ in range(p)] for _ in range(n)])
 
 	def train(self, epochs, learning_rate):
-		print("{:15}|{:20}|{:20}".format("Epoch", "Loss", "Regularisation loss"))
+		print("{:15}|{:20}|{:20}|{:20}".format("Epoch", "Loss",
+		                                       "Regularisation loss",
+		                                       "Precision score"))
 		for epoch in range(epochs):
 			batches = self.data.batches(self.nb_neg_samples)
 			for batch in batches:
 				gradient = self.compute_gradient(batch)
-				self.check_gradient(gradient, batch)
+				# self.check_gradient(gradient, batch)
 				self.update_parameters(gradient, learning_rate)
-			loss = self.compute_loss(theta=self.theta,
-			                         batch=self.data.loss_batch(self.nb_neg_samples))
+			self.print_log_performance(batch, epoch)
 
-			reg = self.regularizer_loss([i for i in range(self.theta.shape[0])])
-			print("{:15}|{:20}|{:20}".format(epoch, loss, reg))
-			self.logger.log(["loss", "batch", "epoch"], [loss, batch, epoch])
+	def print_log_performance(self, batch, epoch):
+		loss = self.compute_loss(theta=self.theta,
+		                         batch=self.data.loss_batch(self.nb_neg_samples))
+
+		reg = self.regularizer_loss([i for i in range(self.theta.shape[0])])
+		precision = self.score(batch)
+
+		print("{:15}|{:20}|{:20}|{:20}".format(epoch, loss, reg, precision))
+		self.logger.log(["loss", "batch", "epoch", "precision"],
+		                [loss, batch, epoch, precision])
 
 	def run(self, save=True):
 		print("Burn-in ... ")
@@ -178,7 +186,7 @@ class PoincareModel:
 		:param data: a list of pairs
 		:return: a list of int : the predictions
 		"""
-		return [self.predict_sample(*sample) for sample in data]
+		return [self.predict_sample(sample["u_id"], sample["v_id"]) for sample in data]
 
 	def score(self, data):
 		"""
