@@ -1,8 +1,5 @@
-from Data import PoincareData
+from embeddings import Embeddings
 
-from constants import DATA_DIR
+directory = "../logs/" + "May:19:2018:16:46:46" + "/"
+embeddings = Embeddings(directory)
 
-data = PoincareData(DATA_DIR,
-                    nmax=1020,
-                    verbose= False)
-batches = data.batches(N=10)

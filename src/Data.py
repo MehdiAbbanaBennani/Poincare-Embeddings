@@ -1,5 +1,7 @@
-import numpy as np
 from collections import defaultdict
+
+import numpy as np
+
 from utils import dotdict
 
 
@@ -36,9 +38,9 @@ class PoincareData():
 		for el in self.all_relations:
 			id1, id2 = el
 			negative_samples = self.negative_samples(id1, nb_neg_samples)
-			sample_dict = {"u_id" : id1,
-			               "v_id" : id2,
-			               "neigh_u_ids" : negative_samples}
+			sample_dict = {"u_id": id1,
+			               "v_id": id2,
+			               "neigh_u_ids": negative_samples}
 			batch.append(dotdict(sample_dict))
 		return batch
 
@@ -47,9 +49,9 @@ class PoincareData():
 		for el in self.all_relations:
 			id1, id2 = el
 			negative_samples = self.negative_samples(id1, nb_neg_samples)
-			sample_dict = {"u_id" : id1,
-			               "v_id" : id2,
-			               "neigh_u_ids" : negative_samples}
+			sample_dict = {"u_id": id1,
+			               "v_id": id2,
+			               "neigh_u_ids": negative_samples}
 			batch.append(dotdict(sample_dict))
 		return batch
 
@@ -95,7 +97,7 @@ class PoincareData():
 				doublon += 1
 			if len(relation) != 2:
 				raise ValueError(
-					'Relation pair "%s" should be a pair !' % repr(relation))
+						'Relation pair "%s" should be a pair !' % repr(relation))
 			if (doublon_tol == True):
 				for w in relation:
 					if w in self.vocab:
@@ -103,7 +105,7 @@ class PoincareData():
 					else:
 						# new word detected
 						self.word2index[w] = len(
-							self.index2word)  # we give the new word its own index
+								self.index2word)  # we give the new word its own index
 						self.index2word.append(w)  # new word in the list
 						self.vocab[w] = 1  # new key in the vocab dictionary
 
@@ -140,5 +142,4 @@ class PoincareData():
 		for i in range(len(self.index2word)):
 			i_dict[str(i)] = self.index2word[i]
 
-		return {"w_dict" : self.word2index,
-		        'i_dict' : i_dict}
+		return {"w_dict": self.word2index, 'i_dict': i_dict}

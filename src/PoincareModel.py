@@ -10,6 +10,7 @@ from utils import log_setup
 
 class PoincareModel:
 	def __init__(self, model_parameters, data_parameters):
+		self.model_parameters = model_parameters
 		self.data = PoincareData(data_parameters["filename"],
 		                         data_parameters["nmax"])
 		self.learning_rate = model_parameters["learning_rate"]
@@ -111,7 +112,7 @@ class PoincareModel:
 		return mod.sum(individual_losses) / individual_losses.shape[0]
 
 	def save_model(self):
-		filename = self.log_dir + "model.out"
+		filename = self.log_dir + "embeddings.out"
 		grad_np.savetxt(filename, self.theta, delimiter=',')
 
 		json_data = json.dumps(self.dicts, indent=4, sort_keys=True)
@@ -120,6 +121,11 @@ class PoincareModel:
 			data = json.dumps(json_data, indent=4, sort_keys=True)
 			outfile.write(data)
 
+		json_data = json.dumps(self.model_parameters, indent=4, sort_keys=True)
+		filename = self.log_dir + "model_parameters.json"
+		with open(filename, 'w') as outfile:
+			data = json.dumps(json_data, indent=4, sort_keys=True)
+			outfile.write(data)
 
 	def save_all(self):
 		self.save_model()
