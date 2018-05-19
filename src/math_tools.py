@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def sum_grads(grads_1, grads_2):
 	"""
 	Compute the sum of grads_1 and grads_2
