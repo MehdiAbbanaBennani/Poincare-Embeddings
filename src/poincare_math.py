@@ -1,21 +1,34 @@
-import numpy
+import autograd.numpy as grad_np
 
 from constants import EPSILON
 
 
-def poincare_dist(u, v, mod=numpy) :
-	if mod.linalg.norm(u - v) != 0 :
-		num = mod.linalg.norm(u - v) ** 2
-		den = (1 - mod.linalg.norm(u) ** 2) * (1 - mod.linalg.norm(v) ** 2)
-		print(u, v)
-		return mod.arccosh(1 + 2 * num / den)
+def poincare_dist(u, v, mod=grad_np) :
+	if mod.linalg.norm(u) > 1 or mod.linalg.norm(v) > 1 :
+		print(mod.linalg.norm(u), mod.linalg.norm(v))
+	euc_dist = mod.linalg.norm(u - v)
+	if euc_dist > EPSILON :
+		u_norm = mod.linalg.norm(u)
+		v_norm = mod.linalg.norm(v)
+		return mod.arccosh(1 + 2 * (
+				(euc_dist ** 2) / ((1 - u_norm ** 2) * (1 - v_norm ** 2))
+		))
 	else:
 		return 0
 
 
-def poincare_projection(theta, epsilon=EPSILON, md=numpy):
+def matrix_poincare_proj(theta, md=grad_np):
+	return md.array([poincare_projection(theta[i])
+	                 for i in range(theta.shape[0])])
+
+
+def poincare_projection(theta, epsilon=EPSILON, md=grad_np):
 	if md.linalg.norm(theta) >= 1 :
-		return theta / md.linalg.norm(theta) - epsilon
+		normalized = theta / md.linalg.norm(theta)
+		shifted = normalized - epsilon * md.sign(normalized)
+		# if md.linalg.norm(shifted) > 1 :
+		# 	print(md.linalg.norm(shifted))
+		return shifted
 	return theta
 
 

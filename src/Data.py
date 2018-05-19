@@ -2,6 +2,7 @@ import numpy as np
 from collections import defaultdict
 from utils import dotdict
 
+
 class PoincareData():
 	def __init__(self, fname, nmax, verbose=False, doublon_tol=False):
 		'''
@@ -38,7 +39,7 @@ class PoincareData():
 			sample_dict = {"u_id" : id1,
 			               "v_id" : id2,
 			               "neigh_u_ids" : negative_samples}
-			batch.append([dotdict(sample_dict)])
+			batch.append(dotdict(sample_dict))
 		return batch
 
 	def loss_batch(self, nb_neg_samples):

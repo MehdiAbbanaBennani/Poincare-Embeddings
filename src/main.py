@@ -2,9 +2,9 @@ from PoincareModel import PoincareModel
 from constants import DATA_DIR
 
 data_parameters = {"filename" :DATA_DIR,
-                         "nmax" : 7724}
+                         "nmax" : 1000}
 
-model_parameters = {"learning_rate" : 0.1,
+model_parameters = {"learning_rate" : 0.01,
                     "epochs" : 15,
                     "burn_in" : False,
                     "l2_reg" : 0.1,
