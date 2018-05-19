@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82d5a861-4fa3-49dc-b036-09c028ad366b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Data.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PoincareModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/PoincareModel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/poincare_math.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/poincare_math.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/Logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/Logger.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,7 +20,7 @@
     <SUITE FILE_PATH="coverage/Poincare_Embeddings$utils.coverage" NAME="utils Coverage Results" MODIFIED="1526573416362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Poincare_Embeddings$draft.coverage" NAME="draft Coverage Results" MODIFIED="1526578407081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Poincare_Embeddings$math_tools.coverage" NAME="math_tools Coverage Results" MODIFIED="1526632217030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/Poincare_Embeddings$main.coverage" NAME="main Coverage Results" MODIFIED="1526736352187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Poincare_Embeddings$main.coverage" NAME="main Coverage Results" MODIFIED="1526740364648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
   <component name="FavoritesManager">
     <favorites_list name="Poincare-Embeddings" />
@@ -28,11 +29,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.49768057">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="poincare_math.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="poincare_math.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/poincare_math.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+                <state relative-caret-position="288">
+                  <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
@@ -52,8 +53,8 @@
           <file leaf-file-name="Data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1116">
-                  <caret line="62" column="6" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="6" />
+                <state relative-caret-position="841">
+                  <caret line="142" selection-start-line="142" selection-end-line="142" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -79,25 +80,13 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Logger.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Logger.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/tools/Logger.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="342">
-                  <caret line="19" column="10" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
+                <state relative-caret-position="432">
+                  <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/utils.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="324">
-                  <caret line="18" selection-start-line="18" selection-end-line="18" />
-                  <folding>
-                    <element signature="e#0#29#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -110,8 +99,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="162">
-                  <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
+                <state relative-caret-position="72">
+                  <caret line="4" column="37" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
                   <folding>
                     <element signature="e#0#39#0" expanded="true" />
                   </folding>
@@ -119,13 +108,22 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="encoder.py" pinned="false" current-in-tab="false">
+            <entry file="file://$USER_HOME$/anaconda3/envs/tensorflow/lib/python3.5/json/encoder.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="204">
+                  <caret line="178" selection-start-line="178" selection-end-line="178" />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="PoincareModel.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/PoincareModel.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-980">
-                  <caret line="26" column="29" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
+                <state relative-caret-position="237">
+                  <caret line="116" column="63" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
                   <folding>
-                    <element signature="e#0#13#0" expanded="true" />
+                    <element signature="e#0#11#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -173,8 +171,8 @@
           <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/constants.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="90">
-                  <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
+                <state relative-caret-position="126">
+                  <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
                 </state>
               </provider>
             </entry>
@@ -185,9 +183,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>vocab</find>
-      <find>Data</find>
-      <find>batch</find>
       <find>sample</find>
       <find>batch_size</find>
       <find>doublon_tol</find>
@@ -214,6 +209,9 @@
       <find>p</find>
       <find>train</find>
       <find>loss_fun</find>
+      <find>save</find>
+      <find>.out</find>
+      <find>pickle</find>
       <find>print</find>
     </findStrings>
   </component>
@@ -228,14 +226,14 @@
         <option value="$PROJECT_DIR$/src/data_treatment.py" />
         <option value="$PROJECT_DIR$/src/draft.py" />
         <option value="$PROJECT_DIR$/src/utils.py" />
-        <option value="$PROJECT_DIR$/src/tools/Logger.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/math_tools.py" />
-        <option value="$PROJECT_DIR$/src/Data.py" />
-        <option value="$PROJECT_DIR$/src/constants.py" />
         <option value="$PROJECT_DIR$/src/poincare_math.py" />
-        <option value="$PROJECT_DIR$/src/PoincareModel.py" />
+        <option value="$PROJECT_DIR$/src/constants.py" />
+        <option value="$PROJECT_DIR$/src/Data.py" />
         <option value="$PROJECT_DIR$/src/main.py" />
+        <option value="$PROJECT_DIR$/src/PoincareModel.py" />
+        <option value="$PROJECT_DIR$/src/tools/Logger.py" />
       </list>
     </option>
   </component>
@@ -289,8 +287,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="add_unversioned_files" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/logs/May:19:2018:16:32:44/dicts.json&#10;/home/mehdi/PycharmProjects/Poincare-Embeddings/logs/May:19:2018:16:31:24/dicts.out&#10;true&#10;/home/mehdi/PycharmProjects/Poincare-Embeddings/logs/May:19:2018:16:32:44/model.out&#10;/home/mehdi/PycharmProjects/Poincare-Embeddings/logs/May:19:2018:16:32:44/logs.json" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../codejam" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -438,22 +436,23 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="-2171" width="1922" height="1092" extended-state="6" />
+    <frame x="-1" y="-11" width="1922" height="1092" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50160086" side_tool="true" weight="0.33788037" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.49626467" weight="0.32948583" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49306297" visible="true" weight="0.30325288" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49839914" weight="0.32843652" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49306297" weight="0.30325288" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49839914" visible="true" weight="0.32843652" />
       <window_info anchor="right" id="JSON Viewer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48493975" visible="true" weight="0.19477054" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.484375" visible="true" weight="0.19477054" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" weight="0.32977587" />
       <window_info id="Structure" order="1" sideWeight="0.92551506" side_tool="true" weight="0.19477054" />
-      <window_info id="Favorites" order="2" sideWeight="0.51506025" side_tool="true" visible="true" weight="0.19477054" />
+      <window_info id="Favorites" order="2" sideWeight="0.515625" side_tool="true" visible="true" weight="0.19477054" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49839914" weight="0.33788037" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -479,9 +478,14 @@
           <option name="timeStamp" value="121" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/PoincareModel.py</url>
-          <line>108</line>
-          <option name="timeStamp" value="126" />
+          <url>file://$PROJECT_DIR$/src/tools/Logger.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/tools/Logger.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="137" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -491,7 +495,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="127" />
+      <option name="time" value="138" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
@@ -569,7 +573,7 @@
         <state relative-caret-position="1692">
           <caret line="104" column="71" selection-start-line="104" selection-start-column="71" selection-end-line="104" selection-end-column="71" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -667,7 +671,7 @@
         <state relative-caret-position="1314">
           <caret line="82" column="39" selection-start-line="82" selection-start-column="39" selection-end-line="82" selection-end-column="39" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -703,16 +707,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tools/Logger.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="10" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="307">
@@ -737,23 +731,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/visualize.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/wordnet_mammal_hypernyms.tsv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-138536" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/math_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="21" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="21" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/anaconda3/envs/tensorflow/lib/python3.5/site-packages/autograd/numpy/numpy_wrapper.py">
@@ -794,49 +774,115 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1116">
-          <caret line="62" column="6" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/poincare_math.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+        <state relative-caret-position="288">
+          <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/math_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="21" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/visualize.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:15:46:36/logs.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:15:46:36/model.pkl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:16:26:35/model.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2970" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/tensorflow/lib/python3.5/json/encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="178" selection-start-line="178" selection-end-line="178" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
+        <state relative-caret-position="72">
+          <caret line="4" column="37" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:16:31:24/dicts.out">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:16:26:35/logs.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:16:31:24/logs.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="841">
+          <caret line="142" selection-start-line="142" selection-end-line="142" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:16:32:44/logs.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:16:32:44/dicts.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="447" lean-forward="true" selection-start-column="447" selection-end-column="447" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/May:19:2018:16:32:44/model.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1248" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/PoincareModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-980">
-          <caret line="26" column="29" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
+        <state relative-caret-position="237">
+          <caret line="116" column="63" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tools/Logger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>

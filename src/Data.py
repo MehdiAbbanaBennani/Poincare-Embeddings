@@ -71,7 +71,7 @@ class PoincareData():
 		keys = list(dico_freq_not_neigh.keys())
 		probs = list(dico_freq_not_neigh.values())
 		probs = [el / freq_tot for el in probs]  # normalized vector
-		return list(np.random.choice(keys, N, p=probs, replace=False)+ [idx])
+		return list(np.random.choice(keys, N, p=probs, replace=False))
 
 	def build_vocab(self, loaded_file, verbose, doublon_tol=False):
 		'''
@@ -134,3 +134,11 @@ class PoincareData():
 		freq_tot = sum(self.vocab.values())
 		for key, value in self.vocab.items():
 			self.wordfrequency[self.word2index[key]] = value / freq_tot
+
+	def dicts(self):
+		i_dict = dict()
+		for i in range(len(self.index2word)):
+			i_dict[str(i)] = self.index2word[i]
+
+		return {"w_dict" : self.word2index,
+		        'i_dict' : i_dict}

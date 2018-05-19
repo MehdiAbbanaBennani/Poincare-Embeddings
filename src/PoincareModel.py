@@ -1,4 +1,4 @@
-import pickle
+import json
 import autograd as a_grad
 
 from Data import PoincareData
@@ -23,6 +23,8 @@ class PoincareModel:
 
 		self.log_dir = log_setup()
 		self.logger = Logger(self.log_dir)
+		self.dicts = self.data.dicts()
+
 
 	def loss_fun(self, matrix, with_reg=True):
 		u_vec = matrix[0]
@@ -85,8 +87,8 @@ class PoincareModel:
 		precision = self.score(batch)
 
 		print("{:15}|{:20}|{:20}".format(epoch, loss, precision))
-		self.logger.log(["loss", "batch", "epoch", "precision"],
-		                [loss, batch, epoch, precision])
+		self.logger.log(["loss", "epoch", "precision"],
+		                [loss, epoch, precision])
 
 	def compute_individual_loss(self, theta, sample, mod):
 		u_vec = theta[sample.u_id]
@@ -108,11 +110,16 @@ class PoincareModel:
 
 		return mod.sum(individual_losses) / individual_losses.shape[0]
 
-
 	def save_model(self):
-		filename = self.log_dir + "model.pkl"
-		with open(filename, 'wb') as f:
-			pickle.dump(self.theta, f)
+		filename = self.log_dir + "model.out"
+		grad_np.savetxt(filename, self.theta, delimiter=',')
+
+		json_data = json.dumps(self.dicts, indent=4, sort_keys=True)
+		filename = self.log_dir + "dicts.json"
+		with open(filename, 'w') as outfile:
+			data = json.dumps(json_data, indent=4, sort_keys=True)
+			outfile.write(data)
+
 
 	def save_all(self):
 		self.save_model()

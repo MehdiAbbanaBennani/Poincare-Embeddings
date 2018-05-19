@@ -19,6 +19,7 @@ class Logger :
 
 	def save(self):
 		filename = self.logdir + "logs.json"
+		json_data = json.dumps(dict(self.logs), indent=4)
 		with open(filename, 'w') as outfile:
-			data = json.dumps(dict(self.logs), indent=4, sort_keys=True)
+			data = json.dumps(json_data, indent=4, sort_keys=True)
 			outfile.write(data)
